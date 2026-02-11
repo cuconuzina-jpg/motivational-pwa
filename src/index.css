@@ -1,0 +1,122 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  --color-bg: #ffffff;
+  --color-text: #213547;
+  --color-primary: #ff4757;
+  /* Energetic Red */
+  --color-secondary: #2ed573;
+  /* Energetic Green */
+  --color-card-bg: #f1f2f6;
+  --color-button-text: #ffffff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+/* Day Mode (Energetic) */
+body.day {
+  --color-bg: #dfe4ea;
+  --color-text: #2f3542;
+  --color-primary: #ff6b81;
+  --color-card-bg: rgba(255, 255, 255, 0.9);
+  /* More transparent for background visibility */
+
+  /* Background Image: Sunrise/Energetic */
+  background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url('https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?q=80&w=1920&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Night Mode (Soothing) */
+body.night {
+  --color-bg: #2f3542;
+  --color-text: #ced6e0;
+  --color-primary: #7bed9f;
+  --color-card-bg: rgba(47, 53, 66, 0.9);
+
+  /* Background Image: Night/Calm */
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1920&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.card {
+  /* Default / Night Card Style */
+  background-color: var(--color-card-bg);
+  padding: 2em;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 2em;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  /* Glassmorphism base */
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Specific Day Mode Override for cleaner look */
+body.day .card {
+  background-color: rgba(255, 255, 255, 0.65);
+  /* Less bright, more transparent */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #2d3436;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--color-primary);
+  color: var(--color-button-text);
+  cursor: pointer;
+  transition: border-color 0.25s;
+  margin: 0.5em;
+}
+
+button:hover {
+  filter: brightness(1.1);
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  padding: 0.5em;
+  font-size: 1.5em;
+}
+
+.icon-btn:hover {
+  color: var(--color-primary);
+  background: none;
+}
