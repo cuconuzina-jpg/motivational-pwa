@@ -65,8 +65,19 @@ function App() {
             fetchNewQuote();
             updateAlarmLastTriggered(alarm.id, now.toISOString());
 
-            // Optional: Show browser notification if permission granted
-            if ("Notification" in window && Notification.permission === "granted") {
+            // Use Service Worker for more reliable notifications
+            if ("serviceWorker" in navigator && "Notification" in window && Notification.permission === "granted") {
+              navigator.serviceWorker.ready.then(registration => {
+                registration.showNotification("⏰ Motivation Time!", {
+                  body: "Time for your motivational quote!",
+                  icon: '/pwa-192x192.png',
+                  badge: '/pwa-192x192.png',
+                  vibrate: [200, 100, 200],
+                  tag: 'quote-notification'
+                });
+              });
+            } else if ("Notification" in window && Notification.permission === "granted") {
+              // Fallback for browsers that don't support SW notifications well but support regular ones
               new Notification("⏰ Motivation Time!", {
                 body: "Time for your motivational quote!",
                 icon: '/pwa-192x192.png'

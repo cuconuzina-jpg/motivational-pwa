@@ -283,11 +283,75 @@ body.night .alarm-time {
   border-radius: 8px;
   font-size: 0.9rem;
   line-height: 1.5;
+  margin-top: 15px;
 }
 
 body.night .alarm-tip {
   background: rgba(167, 139, 250, 0.1);
   border-left-color: #a78bfa;
+}
+
+/* Notification UI Styles */
+.permission-notice {
+  background: rgba(244, 67, 54, 0.1);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.permission-notice p {
+  margin: 0 0 10px 0;
+  color: #f44336;
+  font-weight: 600;
+}
+
+.enable-btn {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.enable-btn:hover {
+  background: #d32f2f;
+  transform: translateY(-1px);
+}
+
+.alarm-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.test-notify-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+body.night .test-notify-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+}
+
+.test-notify-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+body.night .test-notify-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 /* Alarm Button in Main App */

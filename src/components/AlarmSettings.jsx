@@ -3,15 +3,57 @@ import { Bell, BellOff, Trash2, Plus } from 'lucide-react';
 import { getAlarms, saveAlarm, deleteAlarm, toggleAlarm } from '../services/storage';
 
 const AlarmSettings = ({ onClose }) => {
-    const [alarms, setAlarms] = useState([]);
-    const [newAlarmTime, setNewAlarmTime] = useState('09:00');
+    const [permission, setPermission] = useState(
+        typeof Notification !== 'undefined' ? Notification.permission : 'granted'
+    );
 
     useEffect(() => {
         setAlarms(getAlarms());
     }, []);
 
-    const handleAddAlarm = () => {
+    const requestPermission = async () => {
+        if ("Notification" in window) {
+            const result = await Notification.requestPermission();
+            setPermission(result);
+            return result;
+        }
+        return 'denied';
+    };
+
+    const handleTestNotification = async () => {
+        let currentPermission = Notification.permission;
+        if (currentPermission !== 'granted') {
+            currentPermission = await requestPermission();
+        }
+
+        if (currentPermission === 'granted') {
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.ready.then(registration => {
+                    registration.showNotification("🎉 Test Successful!", {
+                        body: "Your motivational reminders are working!",
+                        icon: '/pwa-192x192.png',
+                        badge: '/pwa-192x192.png',
+                        vibrate: [200, 100, 200]
+                    });
+                });
+            } else {
+                new Notification("🎉 Test Successful!", {
+                    body: "Your motivational reminders are working!",
+                    icon: '/pwa-192x192.png'
+                });
+            }
+        } else {
+            alert("Notification permission is blocked. Please enable it in your browser settings.");
+        }
+    };
+
+    const handleAddAlarm = async () => {
         if (newAlarmTime) {
+            // Prompt for permission if not already granted
+            if (Notification.permission !== 'granted') {
+                await requestPermission();
+            }
+
             const alarm = saveAlarm(newAlarmTime);
             setAlarms([...alarms, alarm]);
             setNewAlarmTime('09:00');
@@ -45,6 +87,15 @@ const AlarmSettings = ({ onClose }) => {
                 </div>
 
                 <div className="alarm-settings-body">
+                    {permission !== 'granted' && (
+                        <div className="permission-notice">
+                            <p>Notifications are {permission}. Reminders won't show up!</p>
+                            <button onClick={requestPermission} className="enable-btn">
+                                Enable Notifications
+                            </button>
+                        </div>
+                    )}
+
                     <div className="alarm-add-section">
                         <input
                             type="time"
@@ -82,6 +133,12 @@ const AlarmSettings = ({ onClose }) => {
                                 </div>
                             ))
                         )}
+                    </div>
+
+                    <div className="alarm-actions">
+                        <button onClick={handleTestNotification} className="test-notify-btn">
+                            🔔 Send Test Notification
+                        </button>
                     </div>
 
                     <div className="alarm-tip">
