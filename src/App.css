@@ -354,13 +354,32 @@ body.night .test-notify-btn:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
+/* Header Controls Container */
+.header-controls {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 100;
+}
+
+@media (max-width: 600px) {
+  .header-controls {
+    top: 10px;
+    right: 10px;
+    gap: 5px;
+  }
+}
+
 /* Alarm Button in Main App */
 .alarm-button {
   background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: inherit;
-  width: 50px;
-  height: 50px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -368,6 +387,20 @@ body.night .test-notify-btn:hover {
   cursor: pointer;
   transition: all 0.3s;
   backdrop-filter: blur(10px);
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .alarm-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .alarm-button svg {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .alarm-button:hover {
@@ -381,5 +414,52 @@ body.night .alarm-button {
 }
 
 body.night .alarm-button:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Base icon-btn styling (Theme Toggle) */
+.icon-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: inherit;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+  padding: 0;
+  margin: 0;
+  position: static !important;
+  /* Override any inline absolute if still there */
+}
+
+@media (max-width: 600px) {
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .icon-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  color: inherit;
+  transform: scale(1.05);
+}
+
+body.night .icon-btn {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.night .icon-btn:hover {
   background: rgba(0, 0, 0, 0.3);
 }

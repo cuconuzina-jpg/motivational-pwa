@@ -117,13 +117,12 @@ function App() {
 
   return (
     <div className="App">
-      <div style={{ position: 'absolute', top: '20px', right: '80px' }}>
+      <div className="header-controls">
         <button className="alarm-button" onClick={() => setShowAlarmSettings(true)}>
-          <Bell size={24} />
+          <Bell size={20} />
         </button>
+        <ThemeToggle isNight={isNight} toggleTheme={toggleTheme} />
       </div>
-
-      <ThemeToggle isNight={isNight} toggleTheme={toggleTheme} />
 
       <h1>Daily Motivation</h1>
 
