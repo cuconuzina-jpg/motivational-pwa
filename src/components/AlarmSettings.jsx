@@ -6,6 +6,8 @@ const AlarmSettings = ({ onClose }) => {
     const [permission, setPermission] = useState(
         typeof Notification !== 'undefined' ? Notification.permission : 'granted'
     );
+    const [alarms, setAlarms] = useState([]);
+    const [newAlarmTime, setNewAlarmTime] = useState('09:00');
 
     useEffect(() => {
         setAlarms(getAlarms());
