@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Bell } from 'lucide-react';
 import { fetchQuote } from './services/quoteManager';
-import { getFavorites, saveFavorite, removeFavorite, getSavedTheme, saveTheme } from './services/storage';
+import { getFavorites, saveFavorite, removeFavorite, getSavedTheme, saveTheme, getAlarms, updateAlarmLastTriggered } from './services/storage';
 import QuoteCard from './components/QuoteCard';
 import ThemeToggle from './components/ThemeToggle';
 import FavoritesList from './components/FavoritesList';
+import AlarmSettings from './components/AlarmSettings';
 import './App.css';
 
 function App() {
@@ -11,6 +13,7 @@ function App() {
   const [favorites, setFavorites] = useState([]);
   const [isNight, setIsNight] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showAlarmSettings, setShowAlarmSettings] = useState(false);
 
   // Initialize Theme
   useEffect(() => {
@@ -44,43 +47,41 @@ function App() {
     fetchNewQuote();
   }, []);
 
-  // Notification Logic
+  // Alarm Checker Logic
   useEffect(() => {
-    if (!("Notification" in window)) {
-      console.log("This browser does not support desktop notification");
-      return;
-    }
-
-    if (Notification.permission !== "denied") {
-      Notification.requestPermission();
-    }
-
-    const checkTimeAndNotify = () => {
+    const checkAlarms = () => {
+      const alarms = getAlarms();
       const now = new Date();
-      const hour = now.getHours();
-      const minute = now.getMinutes();
+      const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-      // Notify at 9:00, 13:00, 16:00
-      const notificationTimes = [9, 13, 16];
+      alarms.forEach(alarm => {
+        if (alarm.enabled && alarm.time === currentTime) {
+          // Check if already triggered in the last 60 seconds
+          const lastTriggered = alarm.lastTriggered ? new Date(alarm.lastTriggered) : null;
+          const timeSinceLastTrigger = lastTriggered ? (now - lastTriggered) / 1000 : Infinity;
 
-      if (notificationTimes.includes(hour) && minute === 0) {
-        // Simple check to avoid multiple notifications in the same minute
-        // In a real app, track 'lastNotified' timestamp in localStorage
-        const lastNotified = localStorage.getItem('lastNotified');
-        const currentPeriod = `${now.toDateString()}-${hour}`;
+          if (timeSinceLastTrigger > 60) {
+            // Trigger alarm - fetch new quote
+            fetchNewQuote();
+            updateAlarmLastTriggered(alarm.id, now.toISOString());
 
-        if (lastNotified !== currentPeriod) {
-          new Notification("Motivation Time!", {
-            body: "Time for a productivity boost! Check your new quote.",
-            icon: '/pwa-192x192.png'
-          });
-          fetchNewQuote();
-          localStorage.setItem('lastNotified', currentPeriod);
+            // Optional: Show browser notification if permission granted
+            if ("Notification" in window && Notification.permission === "granted") {
+              new Notification("⏰ Motivation Time!", {
+                body: "Time for your motivational quote!",
+                icon: '/pwa-192x192.png'
+              });
+            }
+          }
         }
-      }
+      });
     };
 
-    const interval = setInterval(checkTimeAndNotify, 60000); // Check every minute
+    // Check alarms every 30 seconds
+    const interval = setInterval(checkAlarms, 30000);
+    // Also check immediately on mount
+    checkAlarms();
+
     return () => clearInterval(interval);
   }, []);
 
@@ -105,6 +106,12 @@ function App() {
 
   return (
     <div className="App">
+      <div style={{ position: 'absolute', top: '20px', right: '80px' }}>
+        <button className="alarm-button" onClick={() => setShowAlarmSettings(true)}>
+          <Bell size={24} />
+        </button>
+      </div>
+
       <ThemeToggle isNight={isNight} toggleTheme={toggleTheme} />
 
       <h1>Daily Motivation</h1>
@@ -132,6 +139,10 @@ function App() {
       </button>
 
       <FavoritesList favorites={favorites} removeFavorite={handleRemoveFavorite} />
+
+      {showAlarmSettings && (
+        <AlarmSettings onClose={() => setShowAlarmSettings(false)} />
+      )}
     </div>
   );
 }

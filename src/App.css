@@ -2,3 +2,320 @@
 .App {
   text-align: center;
 }
+
+/* Alarm Settings Overlay */
+.alarm-settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.alarm-settings-modal {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 0;
+  max-width: 450px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+body.night .alarm-settings-modal {
+  background: rgba(30, 30, 46, 0.95);
+  color: #e0e0e0;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.alarm-settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.night .alarm-settings-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.alarm-settings-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+body.night .close-btn {
+  color: #aaa;
+}
+
+body.night .close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.alarm-settings-body {
+  padding: 25px;
+  overflow-y: auto;
+  max-height: calc(80vh - 80px);
+}
+
+.alarm-add-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.time-input {
+  flex: 1;
+  padding: 12px 15px;
+  font-size: 1.1rem;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  background: white;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.time-input:focus {
+  outline: none;
+  border-color: #FF6B35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+body.night .time-input {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #e0e0e0;
+}
+
+body.night .time-input:focus {
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+}
+
+.add-alarm-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #FF6B35, #f7931e);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.add-alarm-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+}
+
+.add-alarm-btn:active {
+  transform: translateY(0);
+}
+
+body.night .add-alarm-btn {
+  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
+}
+
+body.night .add-alarm-btn:hover {
+  box-shadow: 0 6px 16px rgba(167, 139, 250, 0.4);
+}
+
+.alarms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.no-alarms-msg {
+  text-align: center;
+  padding: 30px 20px;
+  color: #999;
+  font-size: 1rem;
+}
+
+.alarm-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.alarm-item:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+body.night .alarm-item {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+body.night .alarm-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.alarm-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.alarm-toggle.enabled {
+  color: #4caf50;
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.alarm-toggle.disabled {
+  color: #999;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.alarm-toggle:hover {
+  transform: scale(1.1);
+}
+
+.alarm-time {
+  flex: 1;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+body.night .alarm-time {
+  color: #e0e0e0;
+}
+
+.disabled-text {
+  color: #999 !important;
+  text-decoration: line-through;
+}
+
+.delete-alarm-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  color: #f44336;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.delete-alarm-btn:hover {
+  background: rgba(244, 67, 54, 0.1);
+  transform: scale(1.1);
+}
+
+.alarm-tip {
+  background: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid #ffc107;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+body.night .alarm-tip {
+  background: rgba(167, 139, 250, 0.1);
+  border-left-color: #a78bfa;
+}
+
+/* Alarm Button in Main App */
+.alarm-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: inherit;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.alarm-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+body.night .alarm-button {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.night .alarm-button:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
